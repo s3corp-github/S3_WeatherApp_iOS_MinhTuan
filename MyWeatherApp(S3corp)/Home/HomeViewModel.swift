@@ -1,15 +1,13 @@
 //
 //  HomeViewModel.swift
-//  WeatherApp(Resit)
 //
-//  Created by tuan.nguyen on 4/5/22.
 //
 
 import Foundation
 
 class HomeViewModel {
     
-    func fetchData(query: String, success: @escaping (SearchData) -> Void,failure: @escaping (Error)-> Void) {
+    func fetchData(query: String, success: @escaping (Search) -> Void,failure: @escaping (Error)-> Void) {
         func makeUrl(with query: String) -> URL? {
             var components = URLComponents()
             components.scheme = "https"
@@ -51,7 +49,7 @@ class HomeViewModel {
                 do {
                     // Parse the data
                     let decoder = JSONDecoder()
-                    let jsonData = try decoder.decode(SearchData.self, from: data)
+                    let jsonData = try decoder.decode(Search.self, from: data)
                     
                     // Back to the main thread
                     DispatchQueue.main.async {
@@ -63,6 +61,22 @@ class HomeViewModel {
                 
             }
         dataTask.resume()
+    }
+}
+
+private extension Search.Data {
+    var cities: [String] {
+        return result.compactMap { r in
+            guard let areaName = r.areaName.first?.value else { return nil }
+            var city = areaName
+            if let country = r.country.first?.value, !country.isEmpty {
+                city += ", \(country)"
+            }
+            if let region = r.region.first?.value, !region.isEmpty {
+                city += ", \(region)"
+            }
+            return city
+        }
     }
 }
 

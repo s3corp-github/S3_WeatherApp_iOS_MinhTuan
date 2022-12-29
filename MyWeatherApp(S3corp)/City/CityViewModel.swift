@@ -1,8 +1,6 @@
 //
 //  CityViewModel.swift
-//  WeatherApp(Resit)
 //
-//  Created by tuan.nguyen on 4/26/22.
 //
 
 import Foundation

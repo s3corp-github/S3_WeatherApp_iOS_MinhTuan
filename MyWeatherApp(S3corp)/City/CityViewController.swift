@@ -1,8 +1,5 @@
 //
-//  SecondViewController.swift
-//  WeatherApp(Resit)
 //
-//  Created by tuan.nguyen on 4/5/22.
 //
 
 import UIKit

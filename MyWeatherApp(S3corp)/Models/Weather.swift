@@ -2,7 +2,7 @@
 //  Weather.swift
 //  WeatherApp(Resit)
 //
-//  Created by tuan.nguyen on 4/6/22.
+
 //
 
 import Foundation
@@ -21,7 +21,7 @@ extension WeatherData {
     }
 }
 
-extension WeatherData {
+extension WeatherData { 
     struct CurrentCondition: Decodable {
         let weatherIconUrl: [Value]
         let humidity: String
