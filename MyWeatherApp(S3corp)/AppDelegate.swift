@@ -1,9 +1,10 @@
 //
 //  AppDelegate.swift
-//  MyWeatherApp(S3corp)
+//  WeatherApp(UseCase)
 //
-//  Created by tuan.nguyen on 12/23/22.
+//  Created by MT on 3/28/22.
 //
+
 
 import UIKit
 
