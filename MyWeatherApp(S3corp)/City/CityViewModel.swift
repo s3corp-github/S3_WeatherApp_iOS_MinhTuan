@@ -8,8 +8,6 @@ import Foundation
 final class CityViewModel {
     var reloadImageData: ((Data) -> Void)?
     var reloadData : ((ViewData) -> Void)?
-
-
 let city : String
 private let session: URLSession = .shared
 private let userDefaults: UserDefaults = .standard
@@ -29,7 +27,6 @@ extension CityViewModel {
     
     }
 }
-
 private extension CityViewModel {
     func makeUrl(with city: String) -> URL? {
         var components = URLComponents()
@@ -50,8 +47,6 @@ private extension CityViewModel {
         urlRequest.httpMethod = "get"
         return urlRequest
     }
-
-
     func fecthWeatherRequest(with city: String) {
         guard let url = makeUrl(with: city) else { return }
         let urlRequest = makeUrlRequest(from: url)

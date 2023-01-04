@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "604BA810-6B2A-47FA-83AC-ADB72D8488F6"
+            uuid = "D55DF9A4-D562-4E86-A016-A43DD861085E"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MyWeatherApp(S3corp)/Home/HomeViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "10"
-            endingLineNumber = "10"
-            landmarkName = "fetchData(query:success:failure:)"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "dataSearchResults(searchObj:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

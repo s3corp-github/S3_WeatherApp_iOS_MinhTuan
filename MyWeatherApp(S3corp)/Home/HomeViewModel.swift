@@ -2,81 +2,78 @@
 //  HomeViewModel.swift
 //
 //
-
 import Foundation
-
 class HomeViewModel {
+    var data : [String] = []
     
-    func fetchData(query: String, success: @escaping (Search) -> Void,failure: @escaping (Error)-> Void) {
-        func makeUrl(with query: String) -> URL? {
-            var components = URLComponents()
-            components.scheme = "https"
-            components.host = "api.worldweatheronline.com"
-            components.path = "/premium/v1/search.ashx"
-            components.queryItems = [
-                .init(name: "q", value: query),
-                .init(name: "num_of_results", value: "10"),
-                .init(name: "format", value: "json"),
-                .init(name: "key", value: "0c3821cc308b46fb8a594405221403")
-            ]
-            return components.url
-        }
-        
+    func makeUrl(with query: String) -> URL? {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "api.worldweatheronline.com"
+        components.path = "/premium/v1/search.ashx"
+        components.queryItems = [
+            .init(name: "q", value: query),
+            .init(name: "num_of_results", value: "10"),
+            .init(name: "format", value: "json"),
+            .init(name: "key", value: "ba871e68abf34aa09f863523230401")
+        ]
+        return components.url
+    }
+    
+    func fetchData(query: String, success: @escaping (Search) -> Void, failure: @escaping (Error)-> Void) {
         guard let url = makeUrl(with: query) else { return }
         let urlRequest = URLRequest(url: url)
-            // Create URL Session - work on the backgroundi
-        let dataTask = URLSession.shared.dataTask(with: urlRequest) { (data, response ,error) in
+        let dataTask = URLSession.shared.dataTask(with: urlRequest) {[weak self] (data, response ,error) in
+            if let error = error {
+                failure(error)
+                print("DataTask error: \(error.localizedDescription)")
+                return
+            }
+            guard let response = response as? HTTPURLResponse else {
+                print("Empty Response")
+                return
+            }
+            print("Response status code: \(response.statusCode)")
+            
+            guard let data = data else {
+                print("Empty Data")
+                return
+            }
+            do {
+                let decoder = JSONDecoder()
+                let jsonData = try decoder.decode(Search.self, from: data)
                 
-                if let error = error {
-                    failure(error)
-                    print("DataTask error: \(error.localizedDescription)")
-                    return
-                }
+                self?.data.removeAll()
+                self?.dataSearchResults(searchObj: jsonData)
                 
-                guard let response = response as? HTTPURLResponse else {
-                    // Handle Empty Response
-                    print("Empty Response")
-                    return
-                }
-                print("Response status code: \(response.statusCode)")
-                
-                guard let data = data else {
-                    // Handle Empty Data
-                    print("Empty Data")
-                    return
-                }
-                
-                do {
-                    // Parse the data
-                    let decoder = JSONDecoder()
-                    let jsonData = try decoder.decode(Search.self, from: data)
+                DispatchQueue.main.async {
+                    success(jsonData)
                     
-                    // Back to the main thread
-                    DispatchQueue.main.async {
-                        success(jsonData)
-                    }
-                } catch let error {
-                    failure(error)
+                    
                 }
-                
+            } catch let error {
+                failure(error)
             }
+        }
         dataTask.resume()
+        
     }
-}
-
-private extension Search.Data {
-    var cities: [String] {
-        return result.compactMap { r in
-            guard let areaName = r.areaName.first?.value else { return nil }
-            var city = areaName
-            if let country = r.country.first?.value, !country.isEmpty {
-                city += ", \(country)"
+     
+    func dataSearchResults(searchObj: Search) {
+        for result in searchObj.data.result {
+            var string = ""
+            if let areaName = result.areaName.first?.value, !areaName.isEmpty {
+                string += areaName
             }
-            if let region = r.region.first?.value, !region.isEmpty {
-                city += ", \(region)"
+            if let country = result.country.first?.value, !country.isEmpty {
+                string += ", "  + country
             }
-            return city
+            if let region = result.region.first?.value, !region.isEmpty {
+                string += ", "  + region
+            }
+            if !string.isEmpty {
+                self.data.append(string)
+            }
         }
     }
 }
-

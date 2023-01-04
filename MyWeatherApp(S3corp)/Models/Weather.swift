@@ -10,7 +10,6 @@ import Foundation
  struct WeatherData: Decodable {
     let data: Data
 }
-
 extension WeatherData {
     struct Data: Decodable {
         let currentCondition: [CurrentCondition]
@@ -20,7 +19,6 @@ extension WeatherData {
         }
     }
 }
-
 extension WeatherData { 
     struct CurrentCondition: Decodable {
         let weatherIconUrl: [Value]

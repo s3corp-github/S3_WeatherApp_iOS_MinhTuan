@@ -1,10 +1,7 @@
 //
 //  Model.swift
-//  WeatherApp(Resit)
 //
 //
-
-
 struct Search: Decodable, Equatable {
     let data: Data
 
@@ -12,13 +9,11 @@ struct Search: Decodable, Equatable {
         case data = "search_api"
     }
 }
-
 extension Search {
     struct Data: Decodable, Equatable {
         let result: [Result]
     }
 }
-
 extension Search {
     struct Result: Decodable, Equatable {
         let areaName: [Value]
